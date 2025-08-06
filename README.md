@@ -49,3 +49,111 @@ docker push syedsaqlain46/my-nextjs-app:latest
 Once your image is on Docker Hub, anyone (or any server) can run your app with just:
 docker pull syedsaqlain46/my-nextjs-app:latest
 docker run -d -p 3000:3000 syedsaqlain46/my-nextjs-app:latest
+
+
+
+
+
+
+
+
+//////////////////
+Yes ✅ — **you can pull and run your Docker image on Ubuntu without Docker Desktop installed**, as long as:
+
+### ✅ You have the Docker Engine installed (the CLI tools)
+
+---
+
+### 🐳 Minimal Requirements on Ubuntu:
+
+You only need the **Docker Engine (CLI tools)** to pull and run images:
+
+> 📌 No need for Docker Desktop on Ubuntu or any Linux distro — that’s only for Windows/macOS.
+
+---
+
+### 🔧 Step-by-Step: Pull & Run on Ubuntu
+
+#### 1. **Install Docker Engine (if not already installed)**
+
+Run this once:
+
+```bash
+sudo apt update
+sudo apt install docker.io -y
+```
+
+Enable Docker to run at startup:
+
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+Verify Docker is installed:
+
+```bash
+docker --version
+```
+
+---
+
+#### 2. **Login to Docker (Optional if pulling public image)**
+
+If your image is private:
+
+```bash
+docker login
+```
+
+> Enter your Docker Hub credentials.
+
+---
+
+#### 3. **Pull the image**
+
+Use the tag you pushed earlier:
+
+```bash
+docker pull syedsaqlain46/my-nextjs-app:latest
+```
+
+---
+
+#### 4. **Run the container**
+
+Make sure your app exposes port `3000` (or change as needed):
+
+```bash
+docker run -d -p 3000:3000 syedsaqlain46/my-nextjs-app:latest
+```
+
+If using **environment variables**, and your app depends on them (e.g. MongoDB Atlas URL), do:
+
+```bash
+docker run -d -p 3000:3000 --env-file .env.local syedsaqlain46/my-nextjs-app:latest
+```
+
+> Make sure `.env.local` is on your Ubuntu machine in the same directory where you run the command.
+
+---
+
+### 🌍 Access from other devices:
+
+If running on a remote server (not localhost), ensure:
+
+* You open port `3000` in the firewall.
+* You access via `http://your-server-ip:3000`.
+
+---
+
+### ✅ Summary
+
+| Task                  | Requirement                   |
+| --------------------- | ----------------------------- |
+| Docker Desktop        | ❌ Not needed on Ubuntu        |
+| Docker CLI (`docker`) | ✅ Must be installed           |
+| Can pull & run image? | ✅ Yes                         |
+| .env support          | ✅ via `--env-file .env.local` |
+
+Let me know if you want help automating this with a script or adding a reverse proxy like Nginx.
