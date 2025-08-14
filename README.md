@@ -52,7 +52,7 @@ docker run -d -p 3000:3000 syedsaqlain46/my-nextjs-app:latest
 
 
 
-
+-----------
 
 
 
@@ -157,3 +157,60 @@ If running on a remote server (not localhost), ensure:
 | .env support          | ✅ via `--env-file .env.local` |
 
 Let me know if you want help automating this with a script or adding a reverse proxy like Nginx.
+
+
+
+
+
+
+
+
+----------
+kuberbetes installtion
+curl.exe -LO "https://dl.k8s.io/release/v1.32.0/bin/windows/amd64/kubectl.exe"
+
+mkdir "C:\kubectl"
+
+move kubectl.exe C:\kubectl
+
+kubectl version --client
+
+New-Item -Path 'c:\' -Name 'minikube' -ItemType Directory -Force
+$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -OutFile 'c:\minikube\minikube.exe' -Uri 'https://github.com/kubernetes/minikube/releases/latest/download/minikube-windows-amd64.exe' -UseBasicParsing
+
+
+$oldPath = [Environment]::GetEnvironmentVariable('Path', [EnvironmentVariableTarget]::Machine)
+if ($oldPath.Split(';') -inotcontains 'C:\minikube'){
+  [Environment]::SetEnvironmentVariable('Path', $('{0};C:\minikube' -f $oldPath), [EnvironmentVariableTarget]::Machine)
+}
+
+
+minikube start
+
+create deployment.yaml and service.yaml file
+'buil and run docker container
+PS C:\Users\Dell\Documents\NextV6\hrmsv6> kubectl apply -f deployment.yaml
+error: no objects passed to apply
+PS C:\Users\Dell\Documents\NextV6\hrmsv6> kubectl apply -f service.yaml
+service/nextjs-service created
+
+PS C:\Users\Dell\Documents\NextV6\hrmsv6> kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+nextjs-deployment-bd5c64b77-288lb   1/1     Running   0          6m1s
+nextjs-deployment-bd5c64b77-97l7q   1/1     Running   0          6m1s
+
+if status is runing
+accese using
+PS C:\Users\Dell\Documents\NextV6\hrmsv6> minikube service nextjs-service
+|-----------|----------------|-------------|---------------------------|
+| NAMESPACE |      NAME      | TARGET PORT |            URL            |
+|-----------|----------------|-------------|---------------------------|
+| default   | nextjs-service |        3000 | http://192.168.49.2:30080 |
+|-----------|----------------|-------------|---------------------------|
+* Starting tunnel for service nextjs-service.
+|-----------|----------------|-------------|------------------------|
+| NAMESPACE |      NAME      | TARGET PORT |          URL           |
+|-----------|----------------|-------------|------------------------|
+| default   | nextjs-service |             | http://127.0.0.1:51270 |
+|-----------|----------------|-------------|------------------------|
+* Opening service default/nextjs-service in default browser...
